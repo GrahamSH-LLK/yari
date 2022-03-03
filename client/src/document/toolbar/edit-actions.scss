@@ -1,3 +1,5 @@
+@import "~@mdn/minimalist/sass/vars/layout";
+
 .edit-actions {
   align-items: center;
   display: flex;
@@ -5,16 +7,14 @@
   // width: 100%;
 
   li {
+    margin-right: $base-spacing;
+
     .button {
       max-width: unset;
     }
   }
 
-  a {
-    color: var(--text-link);
-  }
-
   p.editor-opening-error {
-    font-weight: var(--font-body-strong-weight);
+    font-weight: bold;
   }
 }

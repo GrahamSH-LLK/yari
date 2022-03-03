@@ -8,7 +8,6 @@ import { Loading } from "../ui/atoms/loading";
 import { PageContentContainer } from "../ui/atoms/page-content";
 
 import "./index.scss";
-import NoteCard from "../ui/molecules/notecards";
 
 interface SearchIndexDoc {
   url: string;
@@ -190,21 +189,21 @@ export default function Sitemap() {
     <PageContentContainer>
       <div id="sitemap">
         {error && (
-          <NoteCard type="error">
+          <div className="notecard error">
             <h4>Error</h4>
             <p>
               <code>{error.toString()}</code>
             </p>
-          </NoteCard>
+          </div>
         )}
 
         {editorOpeningError && (
-          <NoteCard type="error">
+          <div className="notecard error">
             <h4>Error opening in your editor</h4>
             <p>
               <code>{editorOpeningError.toString()}</code>
             </p>
-          </NoteCard>
+          </div>
         )}
 
         {!data && !error && <Loading />}

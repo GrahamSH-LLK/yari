@@ -12,7 +12,6 @@ import { Loading } from "../ui/atoms/loading";
 // the JS (and the JSON XHR fetch of course)
 import "./ingredients/browser-compatibility-table/index.scss";
 import { useLocale } from "../hooks";
-import NoteCard from "../ui/molecules/notecards";
 
 const BrowserCompatibilityTable = lazy(
   () =>
@@ -43,7 +42,7 @@ export function LazyBrowserCompatibilityTable({
       {dataURL ? (
         <LazyBrowserCompatibilityTableInner dataURL={dataURL} />
       ) : (
-        <NoteCard type="warning">
+        <div className="notecard warning">
           <p>
             No compatibility data found for <code>{query}</code>.<br />
             <a href="#on-github">Check for problems with this page</a> or
@@ -53,7 +52,7 @@ export function LazyBrowserCompatibilityTable({
             </a>
             .
           </p>
-        </NoteCard>
+        </div>
       )}
     </>
   );
@@ -123,7 +122,7 @@ class ErrorBoundary extends React.Component<
   render() {
     if (this.state.error) {
       return (
-        <NoteCard type="negative">
+        <div className="notecard negative">
           <p>
             <strong>Error loading browser compatibility table</strong>
           </p>
@@ -152,7 +151,7 @@ class ErrorBoundary extends React.Component<
               {this.state.error.toString()}
             </small>
           </p>
-        </NoteCard>
+        </div>
       );
     }
 

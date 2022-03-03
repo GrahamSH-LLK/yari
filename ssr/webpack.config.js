@@ -29,14 +29,10 @@ module.exports = {
       {
         test: /\.tsx?$/,
         exclude: /node_modules/,
-        use: [
-          {
-            loader: "ts-loader",
-            options: {
-              transpileOnly: true,
-            },
-          },
-        ],
+        loader: "ts-loader",
+        options: {
+          transpileOnly: true,
+        },
       },
       {
         test: /\.svg$/,

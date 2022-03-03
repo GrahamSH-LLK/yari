@@ -123,10 +123,8 @@ export type Toc = {
 export interface Doc {
   title: string;
   locale: string;
-  native: string;
   pageTitle: string;
   mdn_url: string;
-  related_content: any[];
   sidebarHTML: string;
   toc: Toc[];
   body: string;
@@ -142,11 +140,3 @@ export interface Doc {
   hasMathML?: boolean;
   isMarkdown: boolean;
 }
-
-export type FrequentlyViewedEntry = {
-  url: string;
-  title: string;
-  timestamp: number;
-  visitCount: number;
-  parents?: DocParent[];
-};

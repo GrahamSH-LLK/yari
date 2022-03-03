@@ -11,7 +11,7 @@ import { CRUD_MODE } from "../constants";
 import "./banner.scss";
 
 // import { COMMON_SURVEY_ID } from "./ids";
-import { REDESIGN_ANNOUNCEMENT } from "./ids";
+import { PLUS_IDv2 } from "./ids";
 
 const ActiveBanner = React.lazy(() => import("./active-banner"));
 
@@ -114,13 +114,13 @@ export function Banner() {
   // 4. Have you not dismissed it previously
   // 5. Have you seen a different PLUS_IDvN banner before
   // 6. Is your locale en-US?
-  if (CRUD_MODE || !isEmbargoed(REDESIGN_ANNOUNCEMENT)) {
+  if (CRUD_MODE || !isEmbargoed(PLUS_IDv2)) {
     return (
       <React.Suspense fallback={null}>
         <ActiveBanner
-          id={REDESIGN_ANNOUNCEMENT}
+          id={PLUS_IDv2}
           onDismissed={() => {
-            setEmbargoed(REDESIGN_ANNOUNCEMENT, 7);
+            setEmbargoed(PLUS_IDv2, 7);
           }}
         />
       </React.Suspense>

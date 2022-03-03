@@ -5,7 +5,6 @@ import { BrowserRouter as Router } from "react-router-dom";
 import { App } from "./app";
 import { GAProvider } from "./ga-context";
 import { UserDataProvider } from "./user-context";
-import { UIProvider } from "./ui-context";
 
 // import * as serviceWorker from './serviceWorker';
 
@@ -25,11 +24,9 @@ const appData = hydrationElement
 let app = (
   <GAProvider>
     <UserDataProvider>
-      <UIProvider>
-        <Router>
-          <App {...appData} />
-        </Router>
-      </UIProvider>
+      <Router>
+        <App {...appData} />
+      </Router>
     </UserDataProvider>
   </GAProvider>
 );

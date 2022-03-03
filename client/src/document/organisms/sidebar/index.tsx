@@ -1,4 +1,5 @@
 import { Link } from "react-router-dom";
+<<<<<<< HEAD
 import React, { useEffect, useState } from "react";
 import { Button } from "../../../ui/atoms/button";
 
@@ -39,8 +40,14 @@ function SidebarContainer({ doc, children }) {
 
     _setScrollLock(isSidebarOpen);
   }, [isSidebarOpen]);
+=======
 
+import "./index.scss";
+>>>>>>> parent of dbaddf2c7 (Redesign (#5337))
+
+function SidebarContainer({ children }) {
   return (
+<<<<<<< HEAD
     <>
       <nav id="sidebar-quicklinks" className={classes}>
         <Button
@@ -56,35 +63,39 @@ function SidebarContainer({ doc, children }) {
         </div>
       </nav>
     </>
+=======
+    <nav id="sidebar-quicklinks" className="sidebar">
+      {children}
+    </nav>
+>>>>>>> parent of dbaddf2c7 (Redesign (#5337))
   );
 }
 
 export function RenderSideBar({ doc }) {
   if (!doc.related_content) {
-    return (
-      <SidebarContainer doc={doc}>
-        {doc.sidebarHTML && (
-          <>
-            <h4 className="sidebar-heading">Related Topics</h4>
-            <div
-              dangerouslySetInnerHTML={{
-                __html: `${doc.sidebarHTML}`,
-              }}
-            />
-          </>
-        )}
-      </SidebarContainer>
-    );
+    if (doc.sidebarHTML) {
+      return (
+        <SidebarContainer>
+          <h4>Related Topics</h4>
+          <div
+            dangerouslySetInnerHTML={{
+              __html: `${doc.sidebarHTML}`,
+            }}
+          />
+        </SidebarContainer>
+      );
+    }
+    return null;
   }
   return doc.related_content.map((node) => (
-    <SidebarLeaf key={node.title} parent={node} doc={doc} />
+    <SidebarLeaf key={node.title} parent={node} />
   ));
 }
 
-function SidebarLeaf({ doc, parent }) {
+function SidebarLeaf({ parent }) {
   return (
-    <SidebarContainer doc={doc}>
-      <h4 className="sidebar-heading">{parent.title}</h4>
+    <SidebarContainer>
+      <h4>{parent.title}</h4>
       <ul>
         {parent.content.map((node) => {
           if (node.content) {

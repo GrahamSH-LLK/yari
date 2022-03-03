@@ -1,9 +1,24 @@
-import React, { useState, useMemo, useEffect } from "react";
+import React, {
+  Suspense,
+  lazy,
+  useState,
+  useMemo,
+  useRef,
+  useEffect,
+} from "react";
 import { useSearchParams } from "react-router-dom";
 
-import SearchNavigateWidget from "../../../search";
+import { useLocale } from "../../../hooks";
 
 import "./index.scss";
+
+import "./basic-search-widget.scss";
+import {
+  getPlaceholder,
+  SearchProps,
+  useFocusOnSlash,
+} from "../../../search-utils";
+const LazySearchNavigateWidget = lazy(() => import("../../../search"));
 
 function useQueryParamState() {
   const [searchParams] = useSearchParams();
@@ -20,48 +35,109 @@ function useQueryParamState() {
 }
 
 export function Search({
-  hasOpened,
-  onCloseSearch,
+  preload,
   onResultPicked,
-  onChangeIsFocused = () => {},
 }: {
-  hasOpened?: boolean;
-  onCloseSearch?: () => void;
+  preload?: boolean;
   onResultPicked?: () => void;
-  onChangeIsFocused?: (isFocused?: boolean) => void;
 }) {
   const [value, setValue] = useQueryParamState();
   const [isFocused, setIsFocused] = useState(false);
   const [defaultSelection, setDefaultSelection] = useState([0, 0] as const);
+  const [shouldUpgradeSearch, setShouldUpgradeSearch] = useState(false);
 
   const searchProps = useMemo(
     () => ({
       inputValue: value,
       onChangeInputValue: (value) => setValue(value),
       isFocused,
-      onChangeIsFocused: (isFocused) => {
-        setIsFocused(isFocused);
-        onChangeIsFocused(isFocused);
-      },
+      onChangeIsFocused: (isFocused) => setIsFocused(isFocused),
       defaultSelection,
       onChangeSelection: (selection) => setDefaultSelection(selection),
+      onMouseEnter: () => setShouldUpgradeSearch(true),
     }),
-    [value, isFocused, defaultSelection, setValue, onChangeIsFocused]
+    [value, isFocused, defaultSelection, setValue]
   );
 
   useEffect(() => {
-    if (hasOpened) {
-      setIsFocused(true);
+    if (isFocused || preload) {
+      setShouldUpgradeSearch(true);
     }
-  }, [hasOpened]);
+  }, [isFocused, setShouldUpgradeSearch, preload]);
 
   return (
     <div className="header-search">
-      <SearchNavigateWidget
-        {...searchProps}
-        onResultPicked={onResultPicked}
-        onCloseSearch={onCloseSearch}
-      />
+      {shouldUpgradeSearch ? (
+        <Suspense fallback={<BasicSearchWidget {...searchProps} />}>
+          <LazySearchNavigateWidget
+            {...searchProps}
+            onResultPicked={onResultPicked}
+          />
+        </Suspense>
+      ) : (
+        <BasicSearchWidget {...searchProps} />
+      )}
     </div>
+  );
+}
+
+export function BasicSearchWidget({
+  isFocused,
+  onChangeIsFocused,
+  inputValue,
+  onChangeInputValue,
+  onChangeSelection,
+  onMouseEnter,
+}: SearchProps & {
+  onChangeSelection: (selection: [number, number]) => void;
+  onMouseEnter: () => void;
+}) {
+  const locale = useLocale();
+  const inputRef = useRef<null | HTMLInputElement>(null);
+
+  useFocusOnSlash(inputRef);
+
+  return (
+    <form
+      action={`/${locale}/search`}
+      className="search-form search-widget"
+      role="search"
+    >
+      <label htmlFor="main-q" className="visually-hidden">
+        Search MDN
+      </label>
+      <input
+        ref={inputRef}
+        type="search"
+        name="q"
+        id="main-q"
+        className="search-input-field"
+        placeholder={getPlaceholder(isFocused)}
+        pattern="(.|\s)*\S(.|\s)*"
+        required
+        value={inputValue}
+        onMouseEnter={onMouseEnter}
+        onChange={(e) => {
+          onChangeInputValue(e.target.value);
+        }}
+        autoFocus={isFocused}
+        onFocus={() => onChangeIsFocused(true)}
+        onBlur={() => onChangeIsFocused(false)}
+        onSelect={(event) => {
+          if (event.target instanceof HTMLInputElement) {
+            onChangeSelection([
+              event.target.selectionStart!,
+              event.target.selectionEnd!,
+            ]);
+          }
+        }}
+      />
+      <input
+        type="submit"
+        className="ghost search-button"
+        value=""
+        aria-label="Search"
+      />
+    </form>
   );
 }

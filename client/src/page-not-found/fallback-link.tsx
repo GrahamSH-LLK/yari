@@ -4,7 +4,6 @@ import useSWR from "swr";
 
 import { Doc } from "../document/types";
 import LANGUAGES_RAW from "../languages.json";
-import NoteCard from "../ui/molecules/notecards";
 
 const LANGUAGES = new Map(
   Object.entries(LANGUAGES_RAW).map(([locale, data]) => {
@@ -65,7 +64,7 @@ export default function FallbackLink({ url }: { url: string }) {
 
   if (error) {
     return (
-      <NoteCard type="negative" extraClasses="fallback-document">
+      <div className="fallback-document notecard negative">
         <h4>Oh no!</h4>
         <p>
           Unfortunately, when trying to look to see if there was an English
@@ -75,11 +74,11 @@ export default function FallbackLink({ url }: { url: string }) {
         <p>
           The error was: <code>{error.toString()}</code>
         </p>
-      </NoteCard>
+      </div>
     );
   } else if (document) {
     return (
-      <NoteCard type="success" extraClasses="fallback-document">
+      <div className="fallback-document notecard success">
         <h4>Good news!</h4>
         <p>
           The page you requested doesn't exist in{" "}
@@ -93,7 +92,7 @@ export default function FallbackLink({ url }: { url: string }) {
             <small>{document.mdn_url}</small>
           </a>
         </p>
-      </NoteCard>
+      </div>
     );
   } else if (document === null) {
     // It means the lookup "worked" in principle, but there wasn't an English

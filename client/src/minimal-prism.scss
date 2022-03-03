@@ -1,4 +1,4 @@
-/*
+/* 
 This is based on node_modules/prismjs/themes/prism.css as of Mar 26, 2021.
 
 The reason we're not importing all of their CSS is because it contains a lot of
@@ -7,14 +7,14 @@ like `pre[class*="language-"]` and `code[class*="language-"]` but because we
 don't use any of that, we can safely ignore it.
 */
 
-@use "./ui/theme/color-palette/index.scss" as palette;
+@import "~@mdn/minimalist/sass/vars/mdn-web-docs-palette";
 
 .token.comment,
 .token.prolog,
 .token.doctype,
 .token.cdata,
 .token.punctuation {
-  color: palette.$mdn-neutral600;
+  color: $mdn-neutral600;
 }
 
 .token.namespace {
@@ -28,7 +28,7 @@ don't use any of that, we can safely ignore it.
 .token.constant,
 .token.symbol,
 .token.deleted {
-  color: palette.var(--icon-critical);
+  color: $mdn-red700;
 }
 
 .token.selector,
@@ -37,7 +37,7 @@ don't use any of that, we can safely ignore it.
 .token.char,
 .token.builtin,
 .token.inserted {
-  color: palette.$mdn-green700;
+  color: $mdn-green700;
 }
 
 .token.operator,
@@ -45,24 +45,24 @@ don't use any of that, we can safely ignore it.
 .token.url,
 .language-css .token.string,
 .style .token.string {
-  color: palette.$mdn-color-dark-grey-90;
+  color: $mdn-neutral900;
 }
 
 .token.atrule,
 .token.attr-value,
 .token.keyword {
-  color: palette.$mdn-blue700;
+  color: $mdn-blue700;
 }
 
 .token.function,
 .token.class-name {
-  color: palette.$mdn-red600;
+  color: $mdn-red600;
 }
 
 .token.regex,
 .token.important,
 .token.variable {
-  color: palette.$mdn-yellow600;
+  color: $mdn-orange600;
 }
 
 .token.important,

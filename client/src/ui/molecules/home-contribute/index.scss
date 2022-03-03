@@ -1,14 +1,29 @@
-@use "../../vars" as *;
+@use "sass:math";
+
+@import "~@mdn/minimalist/sass/mixins/utils";
+@import "~@mdn/minimalist/sass/vars/mdn-web-docs-palette";
+@import "~@mdn/minimalist/sass/vars/layout";
+@import "~@mdn/minimalist/sass/vars/typography";
 
 .contribute {
-  @media screen and (min-width: $screen-md) {
+  @media #{$mq-small-desktop-and-up} {
     flex-basis: 35%;
   }
 
+  h2 {
+    margin-bottom: $base-spacing;
+
+    @media #{$mq-tablet-and-up} {
+      font-size: $large-font-size;
+    }
+  }
+
   ul {
+    @include reset-list();
+
     li {
-      border-bottom: 1px solid var(--border-primary);
-      margin-bottom: 0.5rem;
+      border-bottom: 1px solid $mdn-neutral100;
+      margin-bottom: math.div($base-spacing, 2);
     }
   }
 }

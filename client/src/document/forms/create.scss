@@ -1,6 +1,9 @@
+@import "~@mdn/minimalist/sass/vars/layout";
+@import "~@mdn/minimalist/sass/vars/typography";
+
 .document-create {
   .close {
-    font-size: 0.8125rem;
-    margin-left: 1rem;
+    font-size: $tiny-text;
+    margin-left: $base-spacing;
   }
 }

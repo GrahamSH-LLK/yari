@@ -14,10 +14,10 @@ export default function WritersHomepage() {
 
   return (
     <PageContentContainer>
-      <div className="container" id="writers-homepage">
+      <div id="writers-homepage">
         <h2>Writer's home page</h2>
 
-        <Search />
+        <Search preload={true} />
 
         {!isServer && (
           <React.Suspense fallback={null}>

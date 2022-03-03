@@ -1,11 +1,13 @@
+@import "~@mdn/minimalist/sass/vars/mdn-web-docs-palette";
+
 $bc-no-support-cross: rgba(94, 3, 6, 0.1);
 $bc-partial-support-cross: rgba(144, 99, 18, 0.2);
 
 .bc-supports {
-  border: 1px solid $mdn-color-dark-grey-90;
+  border: 1px solid $mdn-neutral900;
   display: inline-block;
   min-width: 120px;
-  padding: 1rem;
+  padding: $base-unit;
   position: relative;
   text-align: center;
 }
@@ -40,7 +42,7 @@ $bc-partial-support-cross: rgba(144, 99, 18, 0.2);
 .bc-supports-unknown,
 .bc-supports-yes,
 .bc-table .bc-history {
-  color: $mdn-color-dark-grey-90;
+  color: $mdn-neutral900;
 }
 
 .bc-supports-no {
@@ -76,11 +78,11 @@ $bc-partial-support-cross: rgba(144, 99, 18, 0.2);
   background-position: 50% 50%, 50% 50%;
   background-repeat: no-repeat;
   background-size: 100px 100px, 100px 100px;
-  font-weight: var(--font-body-strong-weight);
+  font-weight: bold;
 }
 
 .bc-supports-unknown {
-  background-color: var(--background-secondary);
+  background-color: $mdn-neutral100;
 }
 
 .bc-supports-preview {

@@ -1,9 +1,11 @@
+@import "~@mdn/minimalist/sass/vars/typography";
+
 #sitemap {
   min-height: 800px;
 
   div.opening-in-your-editor {
     float: right;
-    font-size: 0.8125rem;
+    font-size: $small-font-size;
   }
   ul.breadcrumb {
     li {

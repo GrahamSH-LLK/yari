@@ -25,6 +25,7 @@ export function LanguageToggle({
         return (
           <Link
             to={translationURL}
+            className="view-in-english"
             onClick={() => {
               ga("send", {
                 hitType: "event",
@@ -69,12 +70,10 @@ export function LanguageToggle({
             });
           }}
         >
-          <span className="visually-hidden">Change language</span>
+          <span className="show-desktop">Change language</span>
         </a>
       </li>
-      {locale.toLowerCase() !== "en-us" && (
-        <li className="view-in-english">{getEnglishLink()}</li>
-      )}
+      {locale.toLowerCase() !== "en-us" && <li>{getEnglishLink()}</li>}
     </ul>
   );
 }

@@ -1,41 +1,45 @@
-@use "~@mdn/minimalist/sass/mixins/utils" as *;
-@use "../../vars" as *;
+@use "sass:math";
+
+@import "~@mdn/minimalist/sass/mixins/utils";
+@import "~@mdn/minimalist/sass/vars/mdn-web-docs-palette";
+@import "~@mdn/minimalist/sass/vars/layout";
+@import "~@mdn/minimalist/sass/vars/typography";
 
 .hero {
-  background-color: $mdn-color-blue-20;
-  padding: 1rem;
+  background-color: $mdn-blue300;
+  padding: $base-spacing;
   position: relative;
 
-  @media screen and (max-width: $screen-sm) {
-    background: $mdn-color-blue-20
-      url("../../../assets/home-masthead-background.svg") 0 0 repeat;
+  @media #{$mq-tablet-and-up} {
+    background: $mdn-blue300 url("../../../assets/home-masthead-background.svg")
+      0 0 repeat;
     background-size: cover;
-    padding: 0.5rem;
+    padding: $base-spacing * 2;
     padding-top: 75px;
   }
 
-  @media screen and (min-width: $screen-md) {
-    padding-bottom: 1rem;
+  @media #{$mq-small-desktop-and-up} {
+    padding-bottom: $base-spacing * 3;
   }
 }
 
 .hero-content {
   margin: 0 auto;
-  max-width: 1440px;
+  max-width: $max-width-small-desktop;
   position: relative;
 
   h1 {
-    background-color: $mdn-color-dark-grey-90;
-    color: white;
-    font-size: 1.25rem;
+    background-color: $mdn-neutral900;
+    color: $text-color-inverted;
+    font-size: $xl-font-size-mobile;
     font-weight: normal;
     margin: 0 auto;
-    margin-bottom: 1rem;
+    margin-bottom: $base-spacing;
     text-align: center;
 
-    @media screen and (min-width: $screen-md) {
-      font-size: 1.25rem;
-      margin-bottom: 0.5rem;
+    @media #{$mq-small-desktop-and-up} {
+      font-size: $xl-font-size;
+      margin-bottom: $base-spacing * 2;
       max-width: 750px;
     }
   }
@@ -43,7 +47,7 @@
   ul {
     @include reset-list();
 
-    @media screen and (min-width: $screen-md) {
+    @media #{$mq-small-desktop-and-up} {
       display: flex;
       justify-content: space-around;
     }
@@ -52,17 +56,17 @@
       flex-basis: 35%;
       position: relative;
 
-      @media screen and (min-width: $screen-md) {
+      @media #{$mq-small-desktop-and-up} {
         flex-basis: 25%;
       }
     }
   }
 
   a {
-    border-bottom: 2px solid var(--border-primary);
-    color: black;
+    border-bottom: 2px solid $mdn-neutral900;
+    color: $mdn-neutral900;
     display: inline-block;
-    padding: 0.5rem 0;
+    padding: math.div($base-spacing, 2) 0;
     width: 100%;
 
     &::after {

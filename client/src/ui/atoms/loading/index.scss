@@ -1,4 +1,5 @@
-@use "~@mdn/minimalist/sass/mixins/animation" as *;
+@import "~@mdn/minimalist/sass/vars/layout";
+@import "~@mdn/minimalist/sass/mixins/animation";
 
 .generic-loading {
   @include slow-pulse();

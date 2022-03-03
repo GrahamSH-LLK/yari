@@ -2,13 +2,9 @@ import React from "react";
 import { useSearchParams, useParams, useNavigate } from "react-router-dom";
 import useSWR, { mutate } from "swr";
 
-import { CRUD_MODE, MDN_APP_ANDROID, MDN_APP_DESKTOP } from "../constants";
+import { CRUD_MODE } from "../constants";
 import { useGA } from "../ga-context";
-import {
-  useDocumentURL,
-  useCopyExamplesToClipboard,
-  usePersistFrequentlyViewed,
-} from "./hooks";
+import { useDocumentURL, useCopyExamplesToClipboard } from "./hooks";
 import { Doc } from "./types";
 // Ingredients
 import { Prose, ProseWithHeading } from "./ingredients/prose";
@@ -17,7 +13,8 @@ import { SpecificationSection } from "./ingredients/spec-section";
 
 // Misc
 // Sub-components
-import { ArticleActionsContainer } from "../ui/organisms/article-actions-container";
+import { Breadcrumbs } from "../ui/molecules/breadcrumbs";
+import { LanguageToggle } from "../ui/molecules/language-toggle";
 import { LocalizedContentNote } from "./molecules/localized-content-note";
 import { TOC } from "./organisms/toc";
 import { RenderSideBar } from "./organisms/sidebar";
@@ -35,7 +32,6 @@ import "./index.scss";
 // code could come with its own styling rather than it having to be part of the
 // main bundle all the time.
 import "./interactive-examples.scss";
-// import { useUIStatus } from "../ui-context";
 
 // Lazy sub-components
 const Toolbar = React.lazy(() => import("./toolbar"));
@@ -78,7 +74,7 @@ export function Document(props /* TODO: define a TS interface for this */) {
       refreshInterval: CRUD_MODE ? 500 : 0,
     }
   );
-  usePersistFrequentlyViewed(doc);
+
   useCopyExamplesToClipboard(doc);
 
   React.useEffect(() => {
@@ -88,12 +84,6 @@ export function Document(props /* TODO: define a TS interface for this */) {
       document.title = "💔 Loading error";
     } else if (doc) {
       document.title = doc.pageTitle;
-      MDN_APP_DESKTOP &&
-        window.Desktop &&
-        window.Desktop.setTitle(doc.pageTitle);
-      MDN_APP_ANDROID &&
-        window.Android &&
-        window.Android.setTitle(doc.pageTitle);
     }
   }, [doc, error]);
 
@@ -143,10 +133,9 @@ export function Document(props /* TODO: define a TS interface for this */) {
       }
     }
   }, []);
-  // const { setToastData } = useUIStatus();
 
   if (!doc && !error) {
-    return <Loading minHeight={800} message="Loading document..." />;
+    return <Loading minHeight={600} message="Loading document..." />;
   }
 
   if (error) {
@@ -157,53 +146,55 @@ export function Document(props /* TODO: define a TS interface for this */) {
     return null;
   }
 
+  const translations = doc.other_translations || [];
+
   const isServer = typeof window === "undefined";
 
   return (
     <>
-      <ArticleActionsContainer doc={doc} />
-      {doc.isTranslated ? (
-        <div className="container">
-          <LocalizedContentNote isActive={doc.isActive} locale={locale} />
+      {/* if we have either breadcrumbs or translations for the current page,
+      continue rendering the section */}
+      {(doc.parents || !!translations.length) && (
+        <div className="breadcrumb-locale-container">
+          {doc.parents && <Breadcrumbs parents={doc.parents} />}
+          {translations && !!translations.length && (
+            <LanguageToggle locale={locale} translations={translations} />
+          )}
         </div>
-      ) : (
-        searchParams.get("retiredLocale") && (
-          <div className="container">
-            <RetiredLocaleNote />
-          </div>
-        )
       )}
-      <div className="article-wrapper">
-        <RenderSideBar doc={doc} />
 
-        <div className="toc">
-          {doc.toc && !!doc.toc.length && <TOC toc={doc.toc} />}
-        </div>
+      {doc.isTranslated ? (
+        <LocalizedContentNote isActive={doc.isActive} locale={locale} />
+      ) : (
+        searchParams.get("retiredLocale") && <RetiredLocaleNote />
+      )}
 
-        <MainContentContainer>
-          {!isServer && CRUD_MODE && !props.isPreview && doc.isActive && (
-            <React.Suspense fallback={<Loading message={"Loading toolbar"} />}>
-              <Toolbar
-                doc={doc}
-                reloadPage={() => {
-                  mutate(dataURL);
-                }}
-              />
-            </React.Suspense>
-          )}
+      {doc.toc && !!doc.toc.length && <TOC toc={doc.toc} />}
 
-          {!isServer && doc.hasMathML && (
-            <React.Suspense fallback={null}>
-              <MathMLPolyfillMaybe />
-            </React.Suspense>
-          )}
-          <article className="main-page-content" lang={doc.locale}>
-            <h1>{doc.title}</h1>
-            <RenderDocumentBody doc={doc} />
-            <Metadata doc={doc} locale={locale} />
-          </article>
-        </MainContentContainer>
-      </div>
+      <MainContentContainer>
+        {!isServer && CRUD_MODE && !props.isPreview && doc.isActive && (
+          <React.Suspense fallback={<Loading message={"Loading toolbar"} />}>
+            <Toolbar
+              doc={doc}
+              reloadPage={() => {
+                mutate(dataURL);
+              }}
+            />
+          </React.Suspense>
+        )}
+        {!isServer && doc.hasMathML && (
+          <React.Suspense fallback={null}>
+            <MathMLPolyfillMaybe />
+          </React.Suspense>
+        )}
+        <article className="main-page-content" lang={doc.locale}>
+          <h1>{doc.title}</h1>
+          <RenderDocumentBody doc={doc} />
+        </article>
+        <Metadata doc={doc} locale={locale} />
+      </MainContentContainer>
+
+      {doc.sidebarHTML && <RenderSideBar doc={doc} />}
     </>
   );
 }

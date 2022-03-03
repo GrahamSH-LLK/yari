@@ -35,8 +35,7 @@ function PlatformHeaders({ platforms, browsers }) {
             colSpan={browserCount}
             title={platform}
           >
-            <span className={`icon icon-${platformId}`}></span>
-            <span className="visually-hidden">{platform}</span>
+            <span>{platform}</span>
           </th>
         );
       })}

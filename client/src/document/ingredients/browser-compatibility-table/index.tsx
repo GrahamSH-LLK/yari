@@ -159,20 +159,16 @@ export default function BrowserCompatibilityTable({
         >
           Report problems with this compatibility data on GitHub
         </a>
-        <div className="table-scroll">
-          <div className="table-scroll-inner">
-            <table key="bc-table" className="bc-table bc-table-web">
-              <Headers {...{ platforms, browsers }} />
-              <tbody>
-                <FeatureListAccordion
-                  browsers={browsers}
-                  features={listFeatures(data, "", name)}
-                  locale={locale}
-                />
-              </tbody>
-            </table>
-          </div>
-        </div>
+        <table key="bc-table" className="bc-table bc-table-web">
+          <Headers {...{ platforms, browsers }} />
+          <tbody>
+            <FeatureListAccordion
+              browsers={browsers}
+              features={listFeatures(data, "", name)}
+              locale={locale}
+            />
+          </tbody>
+        </table>
         <Legend compat={data} name={name} />
 
         {/* https://github.com/mdn/yari/issues/1191 */}

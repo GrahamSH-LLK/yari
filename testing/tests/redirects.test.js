@@ -2,8 +2,7 @@ const got = require("got");
 const braces = require("braces");
 
 function serverURL(pathname = "/") {
-  const PORT = parseInt(process.env.SERVER_PORT || "5042");
-  return `http://localhost:${PORT}${pathname}`;
+  return `http://localhost:5042${pathname}`;
 }
 
 function url_test(from, to, { statusCode = 301 } = {}) {

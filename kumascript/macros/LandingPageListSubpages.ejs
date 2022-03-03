@@ -5,5 +5,10 @@
 //
 // Parameters:
 //  None
+
+var html = await template("SubpagesWithSummaries");
+
+// Now we have the entire list in HTML. Let's go through it and try to split it into two columns by force.
 %>
-<%-await template("SubpagesWithSummaries")%>
+
+<%-await template("MakeColumnsForDL", [html])%>
